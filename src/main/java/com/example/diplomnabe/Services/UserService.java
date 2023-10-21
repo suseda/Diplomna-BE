@@ -1,5 +1,6 @@
 package com.example.diplomnabe.Services;
 
+import com.example.diplomnabe.DTO.UserDTO;
 import com.example.diplomnabe.Repositories.UserRepository;
 import com.example.diplomnabe.Classes.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ public class UserService
     {
         userRepository.save(user);
     }
+
 
     public void deleteUser(Long UserId) throws Exception {
         if(userRepository.existsById(UserId))

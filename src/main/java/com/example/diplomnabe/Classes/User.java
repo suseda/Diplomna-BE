@@ -1,9 +1,13 @@
 package com.example.diplomnabe.Classes;
 
+import com.example.diplomnabe.DTO.UserDTO;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 
 @Entity
 @Table
@@ -15,24 +19,35 @@ public class User
     private Long id;
     private String name;
     private String email;
-    private Integer age;
     private String password;
 
+    @OneToMany(mappedBy="owner", fetch = FetchType.EAGER)
+    private List<Recipe> user_recipes;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "USER_FAVOURITES_RECIPE_TABLE",
+            joinColumns = @JoinColumn(name = "user_id",referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "favourites_recipe_id",referencedColumnName = "id")
+    )
+    private Set<Recipe> favourites;
 
 
-    public User(Long id, String name, String email, Integer age, String password) {
+
+    public User(Long id, String name, String email, String password) {
         this.id = id;
         this.name = name;
         this.email = email;
-        this.age = age;
         this.password = password;
+        this.user_recipes = new ArrayList<>();
+        this.favourites = new HashSet<>();
     }
 
-    public User(String name, String email, Integer age, String password) {
+    public User(String name, String email, String password) {
         this.name = name;
         this.email = email;
-        this.age = age;
         this.password = password;
+        this.user_recipes = new ArrayList<>();
+        this.favourites = new HashSet<>();
     }
 
     public User() {}
@@ -61,13 +76,6 @@ public class User
         this.email = email;
     }
 
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
 
     public String getPassword() {
         return password;
@@ -77,14 +85,53 @@ public class User
         this.password = password;
     }
 
+    public List<Recipe> getUser_recipes() {
+        return user_recipes;
+    }
 
+    public void setUser_recipes(ArrayList<Recipe> user_recipes) {
+        this.user_recipes = user_recipes;
+    }
+
+    public Set<Recipe> getFavourites() {
+        return favourites;
+    }
+
+    public void setFavourites(HashSet<Recipe> favourites) {
+        this.favourites = favourites;
+    }
+
+
+    public ArrayList<Long> getUserRecipesId()
+    {
+        ArrayList<Long> ids = new ArrayList<>();
+        for (Recipe userRecipe : this.user_recipes) {
+            ids.add(userRecipe.getId());
+        }
+        return ids;
+    }
+
+    public ArrayList<Long> getUserFavouritesRecipesId()
+    {
+        ArrayList<Long> ids = new ArrayList<>();
+        for (Recipe favourite : this.favourites) {
+            ids.add(favourite.getId());
+        }
+        return ids;
+    }
+
+    public UserDTO convertUserToUserDTO()
+    {
+        ArrayList<Long> user_recipes = getUserRecipesId();
+        ArrayList<Long> user_favourites = getUserFavouritesRecipesId();
+        return new UserDTO(this.getId(), this.getName(), this.getEmail(),user_recipes,user_favourites);
+    }
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
-                ", age=" + age +
                 ", password='" + password + '\'' +
                 '}';
     }
