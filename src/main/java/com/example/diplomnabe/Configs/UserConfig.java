@@ -16,8 +16,8 @@ public class UserConfig
             UserRepository repository
     ) {
         return args -> {
-            User kaloyan = new User("Kaloyan","kaloyan@gmail.com",18,"kalko");
-            User mitko = new User("Mitko","mitko@gmail.com",18,"mitko123");
+            User kaloyan = new User("Kaloyan","kaloyan@gmail.com","kalko");
+            User mitko = new User("Mitko","mitko@gmail.com","mitko123");
             repository.saveAll(List.of(kaloyan,mitko));
 
         };
