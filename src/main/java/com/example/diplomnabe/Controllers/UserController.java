@@ -24,12 +24,7 @@ public class UserController
     @GetMapping
     public List<UserDTO> getUsers()
     {
-        List<UserDTO> list_of_DTO = new ArrayList<>();
-        List<User> users = userService.getUsers();
-        for (User user : users) {
-            list_of_DTO.add(user.convertUserToUserDTO());
-        }
-        return list_of_DTO;
+        return userService.getUsersDTO();
     }
 
     @PostMapping

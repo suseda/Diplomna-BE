@@ -28,16 +28,10 @@ public class RecipeController
     @GetMapping
     public List<RecipeDTO> getRecipes()
     {
-        //return recipeService.getRecipes();
-        List<RecipeDTO> list_of_DTO = new ArrayList<>();
-        List<Recipe> recipes = recipeService.getRecipes();
-        for (Recipe recipe : recipes) {
-            list_of_DTO.add(recipe.convertRecipeToRecipeDTO());
-        }
-        return list_of_DTO;
+        return recipeService.getRecipesDTO();
     }
 
-    @PostMapping("/create/{userId}")
+    @PostMapping("/{userId}")
     public void createRecipe(@PathVariable Long userId, @RequestBody RecipeDTO recipeDTO) {
         recipeService.createRecipe(recipeDTO,userId);
     }
@@ -49,7 +43,7 @@ public class RecipeController
 
     }
 
-    @DeleteMapping(path = "/delete/{RecipeId}")
+    @DeleteMapping(path = "/{RecipeId}")
     public void deleteRecipe(@PathVariable("RecipeId") Long RecipeId) throws Exception {
         recipeService.deleteRecipe(RecipeId);
     }

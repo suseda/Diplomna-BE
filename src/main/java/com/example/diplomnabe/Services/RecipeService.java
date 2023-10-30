@@ -9,6 +9,7 @@ import com.example.diplomnabe.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,8 +30,15 @@ public class RecipeService
         return recipeRepository.findAll();
     }
 
-
-
+    public List<RecipeDTO> getRecipesDTO()
+    {
+        List<RecipeDTO> list_of_DTO = new ArrayList<>();
+        List<Recipe> recipes = getRecipes();
+        for (Recipe recipe : recipes) {
+            list_of_DTO.add(recipe.convertRecipeToRecipeDTO());
+        }
+        return list_of_DTO;
+    }
 
     public void createRecipe(RecipeDTO recipeDTO,Long userId) {
         Optional<User> userOptional = userRepository.findById(userId);
@@ -63,4 +71,5 @@ public class RecipeService
         recipeRepository.save(recipe);
 
     }
+
 }

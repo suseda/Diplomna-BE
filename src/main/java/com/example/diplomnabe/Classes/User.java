@@ -2,23 +2,30 @@ package com.example.diplomnabe.Classes;
 
 import com.example.diplomnabe.DTO.UserDTO;
 import jakarta.persistence.*;
+import lombok.Builder;
+import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
+@Data
+@Builder
 @Entity
-@Table
-public class User
+@Table(name = "user_table")
+public class User implements UserDetails
 {
     @Id
     @SequenceGenerator( name="user_sequence", sequenceName="user_sequence", allocationSize = 1)
     @GeneratedValue( strategy = GenerationType.SEQUENCE, generator = "user_sequence")
     private Long id;
+
     private String name;
+
     private String email;
+
     private String password;
 
     @OneToMany(mappedBy="owner", fetch = FetchType.EAGER)
@@ -31,15 +38,17 @@ public class User
     )
     private Set<Recipe> favourites;
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
-
-    public User(Long id, String name, String email, String password) {
+    public User(Long id, String name, String email, String password, Role role) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
         this.user_recipes = new ArrayList<>();
         this.favourites = new HashSet<>();
+        this.role = role;
     }
 
     public User(String name, String email, String password) {
@@ -48,9 +57,20 @@ public class User
         this.password = password;
         this.user_recipes = new ArrayList<>();
         this.favourites = new HashSet<>();
+        this.role = Role.USER;
     }
 
     public User() {}
+
+    public User(Long id, String name, String email, String password, List<Recipe> user_recipes, Set<Recipe> favourites, Role role) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.user_recipes = user_recipes;
+        this.favourites = favourites;
+        this.role = role;
+    }
 
     public Long getId() {
         return id;
@@ -77,8 +97,38 @@ public class User
     }
 
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     public void setPassword(String password) {

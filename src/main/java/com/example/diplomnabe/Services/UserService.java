@@ -6,6 +6,7 @@ import com.example.diplomnabe.Classes.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,6 +24,16 @@ public class UserService
         return userRepository.findAll();
     }
 
+    public List<UserDTO> getUsersDTO()
+    {
+        List<UserDTO> list_of_DTO = new ArrayList<>();
+        List<User> users = getUsers();
+        for (User user : users) {
+            list_of_DTO.add(user.convertUserToUserDTO());
+        }
+        return list_of_DTO;
+    }
+
     public void addNewUser(User user)
     {
         userRepository.save(user);
@@ -35,4 +46,5 @@ public class UserService
         else
             throw new Exception("user with id " + UserId + " does not exists");
     }
+
 }
