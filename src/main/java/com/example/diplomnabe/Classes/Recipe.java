@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table
+@Table(name = "recipe_table")
 public class Recipe
 {
     @Id
@@ -24,7 +24,7 @@ public class Recipe
     private Integer time_for_cooking;
     private String type;
 
-    //must add products,comments
+    //must add comments
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
@@ -32,6 +32,9 @@ public class Recipe
     private User owner;
     @ManyToMany(mappedBy = "favourites",fetch = FetchType.EAGER)
     private Set<User> users_favourites;
+
+    @OneToMany(mappedBy="recipe", fetch = FetchType.EAGER)
+    private List<Product> products;
 
 
     public Recipe(Long id, String name, String description, Integer time_for_cooking, String type,User owner) {

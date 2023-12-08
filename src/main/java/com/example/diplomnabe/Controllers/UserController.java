@@ -1,5 +1,6 @@
 package com.example.diplomnabe.Controllers;
 
+import com.example.diplomnabe.Classes.Recipe;
 import com.example.diplomnabe.Classes.User;
 import com.example.diplomnabe.DTO.UserDTO;
 import com.example.diplomnabe.Services.UserService;
@@ -25,6 +26,18 @@ public class UserController
     public List<UserDTO> getUsers()
     {
         return userService.getUsersDTO();
+    }
+
+    @GetMapping("/recipes/{userId}")
+    public List<Recipe> RecipesOfUser(@PathVariable Long userId)
+    {
+        return userService.getRecipesOfUser(userId);
+    }
+
+    @GetMapping("favourites/{userId}")
+    public List<Recipe> FavouritesRecipesOfUser(@PathVariable Long userId)
+    {
+        return userService.getFavouritesRecipesOfUser(userId);
     }
 
     @PostMapping

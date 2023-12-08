@@ -1,5 +1,6 @@
-package com.example.diplomnabe.Configs;
+package com.example.diplomnabe;
 
+import com.example.diplomnabe.Configs.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -10,6 +11,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
+import java.util.LinkedList;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -40,5 +47,24 @@ public class SecurityConfig
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    @Bean
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        List<String> options = new LinkedList<>();
+        options.add("GET");
+        options.add("POST");
+        options.add("PUT");
+        options.add("DELETE");
+        options.add("OPTIONS");
+        CorsConfiguration config = new CorsConfiguration();
+        config.addAllowedOrigin("http://localhost:5173");
+        config.addAllowedHeader("*");
+        config.setAllowedMethods(options);
+        source.registerCorsConfiguration("/**", config);
+
+
+        return new CorsFilter(source);
     }
 }

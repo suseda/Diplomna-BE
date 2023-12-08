@@ -1,5 +1,6 @@
 package com.example.diplomnabe.Services;
 
+import com.example.diplomnabe.Classes.Recipe;
 import com.example.diplomnabe.DTO.UserDTO;
 import com.example.diplomnabe.Repositories.UserRepository;
 import com.example.diplomnabe.Classes.User;
@@ -47,4 +48,13 @@ public class UserService
             throw new Exception("user with id " + UserId + " does not exists");
     }
 
+    public List<Recipe> getRecipesOfUser(Long userId)
+    {
+        return userRepository.getReferenceById(userId).getUser_recipes();
+    }
+
+    public List<Recipe> getFavouritesRecipesOfUser(Long userId)
+    {
+        return userRepository.getReferenceById(userId).getFavourites();
+    }
 }

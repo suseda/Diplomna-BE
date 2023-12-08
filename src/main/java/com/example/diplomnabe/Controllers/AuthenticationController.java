@@ -5,10 +5,7 @@ import com.example.diplomnabe.Authentication.AuthenticationResponse;
 import com.example.diplomnabe.Authentication.RegisterRequest;
 import com.example.diplomnabe.Services.AuthenticationService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/version1/auth")

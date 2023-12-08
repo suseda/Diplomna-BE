@@ -25,10 +25,10 @@ public class RecipeController
         this.recipeService = recipeService;
     }
 
-    @GetMapping
-    public List<RecipeDTO> getRecipes()
+    @GetMapping("/{searchWord}")
+    public List<RecipeDTO> getRecipes(@PathVariable String searchWord)
     {
-        return recipeService.getRecipesDTO();
+        return recipeService.getRecipesDTO(searchWord);
     }
 
     @PostMapping("/{userId}")

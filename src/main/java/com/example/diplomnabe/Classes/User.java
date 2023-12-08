@@ -36,7 +36,7 @@ public class User implements UserDetails
             joinColumns = @JoinColumn(name = "user_id",referencedColumnName = "id"),
         inverseJoinColumns = @JoinColumn(name = "favourites_recipe_id",referencedColumnName = "id")
     )
-    private Set<Recipe> favourites;
+    private List<Recipe> favourites;
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -47,7 +47,7 @@ public class User implements UserDetails
         this.email = email;
         this.password = password;
         this.user_recipes = new ArrayList<>();
-        this.favourites = new HashSet<>();
+        this.favourites = new ArrayList<>();
         this.role = role;
     }
 
@@ -56,13 +56,13 @@ public class User implements UserDetails
         this.email = email;
         this.password = password;
         this.user_recipes = new ArrayList<>();
-        this.favourites = new HashSet<>();
+        this.favourites = new ArrayList<>();
         this.role = Role.USER;
     }
 
     public User() {}
 
-    public User(Long id, String name, String email, String password, List<Recipe> user_recipes, Set<Recipe> favourites, Role role) {
+    public User(Long id, String name, String email, String password, List<Recipe> user_recipes, List<Recipe> favourites, Role role) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -143,11 +143,11 @@ public class User implements UserDetails
         this.user_recipes = user_recipes;
     }
 
-    public Set<Recipe> getFavourites() {
+    public List<Recipe> getFavourites() {
         return favourites;
     }
 
-    public void setFavourites(HashSet<Recipe> favourites) {
+    public void setFavourites(ArrayList<Recipe> favourites) {
         this.favourites = favourites;
     }
 

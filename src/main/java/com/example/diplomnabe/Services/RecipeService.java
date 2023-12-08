@@ -3,10 +3,11 @@ import com.example.diplomnabe.Classes.Recipe;
 
 import com.example.diplomnabe.Classes.User;
 import com.example.diplomnabe.DTO.RecipeDTO;
-import com.example.diplomnabe.DTO.UserDTO;
 import com.example.diplomnabe.Repositories.RecipeRepository;
 import com.example.diplomnabe.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,15 +26,17 @@ public class RecipeService
         this.recipeRepository = recipeRepository;
         this.userRepository = userRepository;
     }
-    public List<Recipe> getRecipes()
+    public List<Recipe> getRecipes(String search_word)
     {
-        return recipeRepository.findAll();
+        Pageable pageable = PageRequest.of(0, 3);
+        return recipeRepository.findByNameWithPagination(search_word, pageable).getContent();
+        //return recipeRepository.findAll();
     }
 
-    public List<RecipeDTO> getRecipesDTO()
+    public List<RecipeDTO> getRecipesDTO(String search_word)
     {
         List<RecipeDTO> list_of_DTO = new ArrayList<>();
-        List<Recipe> recipes = getRecipes();
+        List<Recipe> recipes = getRecipes(search_word);
         for (Recipe recipe : recipes) {
             list_of_DTO.add(recipe.convertRecipeToRecipeDTO());
         }
