@@ -11,5 +11,5 @@ import org.springframework.stereotype.Repository;
 public interface RecipeRepository extends JpaRepository<Recipe,Long>
 {
     @Query("SELECT r FROM Recipe r WHERE LOWER(r.name) LIKE LOWER(CONCAT('%', ?1, '%'))")
-    Page<Recipe> findByNameWithPagination(String name, Pageable pageable);
+    Page<Recipe> findByNameWithPagination(Pageable pageable, String searchedWord);
 }

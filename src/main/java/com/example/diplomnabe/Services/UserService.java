@@ -1,9 +1,11 @@
 package com.example.diplomnabe.Services;
 
 import com.example.diplomnabe.Classes.Recipe;
+import com.example.diplomnabe.DTO.RecipeDTO;
 import com.example.diplomnabe.DTO.UserDTO;
 import com.example.diplomnabe.Repositories.UserRepository;
 import com.example.diplomnabe.Classes.User;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,9 +50,15 @@ public class UserService
             throw new Exception("user with id " + UserId + " does not exists");
     }
 
-    public List<Recipe> getRecipesOfUser(Long userId)
+    @Transactional
+    public List<RecipeDTO> getRecipesOfUser(Long userId)
     {
-        return userRepository.getReferenceById(userId).getUser_recipes();
+        User user = userRepository.getReferenceById(userId);
+        List<Recipe> recipes = user.getUser_recipes();
+        List<RecipeDTO> recipesDTO = new ArrayList<>();
+        for(Recipe recipe: recipes)
+            recipesDTO.add(recipe.convertRecipeToRecipeDTO());
+        return recipesDTO;
     }
 
     public List<Recipe> getFavouritesRecipesOfUser(Long userId)
