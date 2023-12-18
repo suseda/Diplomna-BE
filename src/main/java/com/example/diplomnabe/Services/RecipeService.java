@@ -3,14 +3,14 @@ import com.example.diplomnabe.Classes.Recipe;
 
 import com.example.diplomnabe.Classes.User;
 import com.example.diplomnabe.DTO.RecipeDTO;
-import com.example.diplomnabe.DTO.UserDTO;
 import com.example.diplomnabe.Repositories.RecipeRepository;
 import com.example.diplomnabe.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,19 +25,16 @@ public class RecipeService
         this.recipeRepository = recipeRepository;
         this.userRepository = userRepository;
     }
-    public List<Recipe> getRecipes()
-    {
-        return recipeRepository.findAll();
+
+    public Page<RecipeDTO> getRecipesDTO(Pageable pageable) {
+        Page<Recipe> recipes = recipeRepository.findAll(pageable);
+        return recipes.map(recipe -> recipe.convertRecipeToRecipeDTO());
     }
 
-    public List<RecipeDTO> getRecipesDTO()
+    public Page<RecipeDTO> getRecipesDTOBySearch(Pageable pageable, String searchedWord)
     {
-        List<RecipeDTO> list_of_DTO = new ArrayList<>();
-        List<Recipe> recipes = getRecipes();
-        for (Recipe recipe : recipes) {
-            list_of_DTO.add(recipe.convertRecipeToRecipeDTO());
-        }
-        return list_of_DTO;
+        Page<Recipe> recipes = recipeRepository.findByNameWithPagination(pageable,searchedWord);
+        return recipes.map(recipe -> recipe.convertRecipeToRecipeDTO());
     }
 
     public void createRecipe(RecipeDTO recipeDTO,Long userId) {
@@ -71,5 +68,6 @@ public class RecipeService
         recipeRepository.save(recipe);
 
     }
+
 
 }

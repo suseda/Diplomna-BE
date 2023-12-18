@@ -24,14 +24,17 @@ public class Recipe
     private Integer time_for_cooking;
     private String type;
 
-    //must add products,comments
+    //must add comments
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
     @JsonManagedReference
     private User owner;
     @ManyToMany(mappedBy = "favourites",fetch = FetchType.EAGER)
-    private Set<User> users_favourites;
+    private List<User> users_favourites;
+
+    @OneToMany(mappedBy = "recipe",  fetch = FetchType.EAGER)
+    private List<RecipeProduct> products;
 
 
     public Recipe(Long id, String name, String description, Integer time_for_cooking, String type,User owner) {
@@ -41,8 +44,9 @@ public class Recipe
         this.description = description;
         this.time_for_cooking = time_for_cooking;
         this.type = type;
-        this.users_favourites = new HashSet<>();
+        this.users_favourites = new ArrayList<>();
         this.owner = owner;
+        this.products = new ArrayList<>();
     }
 
     public Recipe(String name, String description, Integer time_for_cooking, String type, User owner) {
@@ -51,8 +55,9 @@ public class Recipe
         this.description = description;
         this.time_for_cooking = time_for_cooking;
         this.type = type;
-        this.users_favourites = new HashSet<>();
+        this.users_favourites = new ArrayList<>();
         this.owner = owner;
+        this.products = new ArrayList<>();
     }
 
     public Recipe() {}
@@ -113,11 +118,11 @@ public class Recipe
         this.owner = owner;
     }
 
-    public Set<User> getUsers_favourites() {
+    public List<User> getUsers_favourites() {
         return users_favourites;
     }
 
-    public void setUsers_favourites(HashSet<User> users_favourites) {
+    public void setUsers_favourites(List<User> users_favourites) {
         this.users_favourites = users_favourites;
     }
 

@@ -1,7 +1,5 @@
 package com.example.diplomnabe.DTO;
 
-import com.example.diplomnabe.Classes.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.ArrayList;
 

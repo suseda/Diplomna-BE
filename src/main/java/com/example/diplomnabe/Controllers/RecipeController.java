@@ -6,6 +6,9 @@ import com.example.diplomnabe.DTO.UserDTO;
 import com.example.diplomnabe.Repositories.UserRepository;
 import com.example.diplomnabe.Services.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,10 +28,20 @@ public class RecipeController
         this.recipeService = recipeService;
     }
 
-    @GetMapping
-    public List<RecipeDTO> getRecipes()
-    {
-        return recipeService.getRecipesDTO();
+    @GetMapping("/pagination")
+    public ResponseEntity<List<RecipeDTO>> getRecipes(@RequestParam int page) {
+        Pageable pageable = PageRequest.of(page, 3);
+        List<RecipeDTO> recipes = recipeService.getRecipesDTO(pageable).getContent();
+        System.out.println(recipes);
+        return ResponseEntity.ok(recipes);
+    }
+
+    @GetMapping("/paginationWithSearch")
+    public ResponseEntity<List<RecipeDTO>> getRecipesBySearch(@RequestParam int page, @RequestParam String searchedWord) {
+        Pageable pageable = PageRequest.of(page, 3);
+        List<RecipeDTO> recipes = recipeService.getRecipesDTOBySearch(pageable,searchedWord).getContent();
+        System.out.println(recipes);
+        return ResponseEntity.ok(recipes);
     }
 
     @PostMapping("/{userId}")

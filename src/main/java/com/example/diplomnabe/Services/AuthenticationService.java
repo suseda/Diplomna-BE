@@ -4,6 +4,7 @@ import com.example.diplomnabe.Authentication.AuthenticationRequest;
 import com.example.diplomnabe.Authentication.AuthenticationResponse;
 import com.example.diplomnabe.Authentication.RegisterRequest;
 import com.example.diplomnabe.Classes.Role;
+import com.example.diplomnabe.DTO.UserDTO;
 import com.example.diplomnabe.Repositories.UserRepository;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,10 +38,8 @@ public class AuthenticationService
                 .build();
         userRepository.save(user);
         var jwtToken = jwtService.generateToken(user);
-        return AuthenticationResponse
-                .builder()
-                .token(jwtToken)
-                .build();
+        var userDTO = new UserDTO(user.getId(), user.getName(), user.getEmail(), user.getUserRecipesId(),user.getUserFavouritesRecipesId());
+        return new AuthenticationResponse(jwtToken,userDTO);
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request)
@@ -50,10 +49,8 @@ public class AuthenticationService
                 request.getPassword()
         ));
         var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
+        var userDTO = new UserDTO(user.getId(), user.getName(), user.getEmail(), user.getUserRecipesId(),user.getUserFavouritesRecipesId());
         var jwtToken = jwtService.generateToken(user);
-        return AuthenticationResponse
-                .builder()
-                .token(jwtToken)
-                .build();
+        return new AuthenticationResponse(jwtToken,userDTO);
     }
 }
