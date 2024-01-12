@@ -61,8 +61,25 @@ public class UserService
         return recipesDTO;
     }
 
-    public List<Recipe> getFavouritesRecipesOfUser(Long userId)
+    @Transactional
+    public List<RecipeDTO> getFavouritesRecipesOfUser(Long userId)
     {
-        return userRepository.getReferenceById(userId).getFavourites();
+        User user = userRepository.getReferenceById(userId);
+        List<Recipe> fav = user.getFavourites();
+        List<RecipeDTO> recipesDTO = new ArrayList<>();
+
+        if (fav.isEmpty())
+            return recipesDTO;
+
+        for(Recipe recipe: fav)
+            recipesDTO.add(recipe.convertRecipeToRecipeDTO());
+        return recipesDTO;
+    }
+
+    public void updateUsername(String newName, Long userId)
+    {
+        User user = userRepository.getReferenceById(userId);
+        user.setName(newName);
+        userRepository.save(user);
     }
 }

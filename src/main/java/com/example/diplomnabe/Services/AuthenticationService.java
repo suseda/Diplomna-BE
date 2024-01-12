@@ -30,12 +30,13 @@ public class AuthenticationService
 
     public AuthenticationResponse register(RegisterRequest request)
     {
-        var user = User.builder()
+        /*var user = User.builder()
                 .name(request.getName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
-                .build();
+                .build();*/
+        var user = new User(request.getName(), request.getEmail(), passwordEncoder.encode(request.getPassword()));
         userRepository.save(user);
         var jwtToken = jwtService.generateToken(user);
         var userDTO = new UserDTO(user.getId(), user.getName(), user.getEmail(), user.getUserRecipesId(),user.getUserFavouritesRecipesId());

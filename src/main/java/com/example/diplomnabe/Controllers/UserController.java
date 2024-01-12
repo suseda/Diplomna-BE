@@ -35,8 +35,8 @@ public class UserController
         return userService.getRecipesOfUser(userId);
     }
 
-    @GetMapping("favourites/{userId}")
-    public List<Recipe> FavouritesRecipesOfUser(@PathVariable Long userId)
+    @GetMapping("/favourites/{userId}")
+    public List<RecipeDTO> FavouritesRecipesOfUser(@PathVariable Long userId)
     {
         return userService.getFavouritesRecipesOfUser(userId);
     }
@@ -46,8 +46,13 @@ public class UserController
     {
         userService.addNewUser(user);
     }
+    @PatchMapping("/{userId}/{newName}")
+    public void updateName(@PathVariable String newName, @PathVariable Long userId)
+    {
+        userService.updateUsername(newName,userId);
+    }
 
-    @DeleteMapping(path = "{UserId}")
+    @DeleteMapping(path = "/{UserId}")
     public void deleteUser(@PathVariable("UserId") Long UserId) throws Exception {
         userService.deleteUser(UserId);
     }

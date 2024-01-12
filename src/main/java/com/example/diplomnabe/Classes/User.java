@@ -156,6 +156,9 @@ public class User implements UserDetails
     public ArrayList<Long> getUserRecipesId()
     {
         ArrayList<Long> ids = new ArrayList<>();
+        if(this.user_recipes.isEmpty())
+            return ids;
+
         for (Recipe userRecipe : this.user_recipes) {
             ids.add(userRecipe.getId());
         }
@@ -165,6 +168,9 @@ public class User implements UserDetails
     public ArrayList<Long> getUserFavouritesRecipesId()
     {
         ArrayList<Long> ids = new ArrayList<>();
+        if(this.favourites.isEmpty())
+            return ids;
+
         for (Recipe favourite : this.favourites) {
             ids.add(favourite.getId());
         }
@@ -186,4 +192,5 @@ public class User implements UserDetails
                 ", password='" + password + '\'' +
                 '}';
     }
+
 }

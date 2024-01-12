@@ -2,9 +2,11 @@ package com.example.diplomnabe.Services;
 
 import com.example.diplomnabe.Classes.Product;
 import com.example.diplomnabe.Classes.Recipe;
+import com.example.diplomnabe.Classes.User;
 import com.example.diplomnabe.DTO.ProductDTO;
 import com.example.diplomnabe.Repositories.ProductRepository;
 import com.example.diplomnabe.Repositories.RecipeRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -35,8 +37,12 @@ public class ProductService
         return list_of_DTO;
     }
 
-    public void createProduct(ProductDTO productDTO) {
-        Product product = new Product(productDTO.getName());
+    public void createProduct(String name) {
+        if(!productRepository.findByName(name).isEmpty())
+        {
+
+        }
+        Product product = new Product(name);
         productRepository.save(product);
     }
 

@@ -28,6 +28,14 @@ public class RecipeDTO
         this.user_favourites_recipe_ids = user_favourites_recipe_ids;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
