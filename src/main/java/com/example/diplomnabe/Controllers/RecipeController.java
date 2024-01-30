@@ -42,10 +42,10 @@ public class RecipeController
         return recipeService.getRecipeById(Id);
     }
 
-    @GetMapping("/{searchedWord}")
-    public long getPagesCntOfSearchedWord(@PathVariable String searchedWord)
+    @GetMapping("/getSearchedCnt")
+    public long getPagesCntOfSearchedWord(@RequestParam String searchedWord, @RequestParam String type)
     {
-        return recipeService.getPagesCntOfSearchedWord(searchedWord);
+        return recipeService.getPagesCntOfSearchedWord(searchedWord,type);
     }
 
     @GetMapping("/pagination")
@@ -57,9 +57,9 @@ public class RecipeController
     }
 
     @GetMapping("/paginationWithSearch")
-    public ResponseEntity<List<RecipeDTO>> getRecipesBySearch(@RequestParam int page, @RequestParam String searchedWord) {
+    public ResponseEntity<List<RecipeDTO>> getRecipesBySearch(@RequestParam int page, @RequestParam String searchedWord, @RequestParam String type) {
         Pageable pageable = PageRequest.of(page, 3);
-        List<RecipeDTO> recipes = recipeService.getRecipesDTOBySearch(pageable,searchedWord).getContent();
+        List<RecipeDTO> recipes = recipeService.getRecipesDTOBySearch(pageable,searchedWord,type).getContent();
         System.out.println(recipes);
         return ResponseEntity.ok(recipes);
     }
@@ -69,6 +69,13 @@ public class RecipeController
     {
         return recipeService.getRecipeProducts(recipeId);
     }
+
+    @GetMapping("/favConnectionExist")
+    public boolean getFavConnectionExist(@RequestParam Long recipeId,@RequestParam Long userId)
+    {
+        return recipeService.getFavConnectionExist(recipeId,userId);
+    }
+
 
     @PostMapping("/{userId}")
     public void createRecipe(@PathVariable Long userId, @RequestBody RecipeDTO recipeDTO) {

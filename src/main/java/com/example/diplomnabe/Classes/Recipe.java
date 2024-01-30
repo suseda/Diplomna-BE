@@ -33,6 +33,9 @@ public class Recipe
     @ManyToMany(mappedBy = "favourites",fetch = FetchType.EAGER)
     private List<User> users_favourites;
 
+    @ManyToMany(mappedBy = "liked_recipes",fetch = FetchType.EAGER)
+    private List<User> users_likes;
+
     @OneToMany(mappedBy = "recipe",  fetch = FetchType.EAGER)
     private List<RecipeProduct> products;
 
@@ -45,6 +48,7 @@ public class Recipe
         this.time_for_cooking = time_for_cooking;
         this.type = type;
         this.users_favourites = new ArrayList<>();
+        this.users_likes = new ArrayList<>();
         this.owner = owner;
         this.products = new ArrayList<>();
     }
@@ -56,6 +60,7 @@ public class Recipe
         this.time_for_cooking = time_for_cooking;
         this.type = type;
         this.users_favourites = new ArrayList<>();
+        this.users_likes = new ArrayList<>();
         this.owner = owner;
         this.products = new ArrayList<>();
     }
@@ -126,10 +131,26 @@ public class Recipe
         this.users_favourites = users_favourites;
     }
 
+    public List<User> getUsers_likes() {
+        return users_likes;
+    }
+
+    public void setUsers_likes(List<User> users_likes) {
+        this.users_likes = users_likes;
+    }
+
+    public List<RecipeProduct> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<RecipeProduct> products) {
+        this.products = products;
+    }
+
     public RecipeDTO convertRecipeToRecipeDTO()
     {
         ArrayList<Long> user_favourites_recipes_ids = getUserFavouritesRecipesId();
-        return new RecipeDTO(this.getId(), this.getName(), this.getLikes(),this.getDescription(),this.getTime_for_cooking(),this.getType(),this.getOwner().getId(),user_favourites_recipes_ids);
+        return new RecipeDTO(this.getId(),this.getName(), this.getLikes(),this.getDescription(),this.getTime_for_cooking(),this.getType(),this.getOwner().getId(),user_favourites_recipes_ids);
     }
 
     private ArrayList<Long> getUserFavouritesRecipesId()

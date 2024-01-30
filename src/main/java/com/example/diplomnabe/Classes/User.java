@@ -38,6 +38,13 @@ public class User implements UserDetails
     )
     private List<Recipe> favourites;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "USER_LIKES_RECIPE_TABLE",
+            joinColumns = @JoinColumn(name = "user_id",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "liked_recipes_id",referencedColumnName = "id")
+    )
+    private List<Recipe> liked_recipes;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -48,6 +55,7 @@ public class User implements UserDetails
         this.password = password;
         this.user_recipes = new ArrayList<>();
         this.favourites = new ArrayList<>();
+        this.liked_recipes = new ArrayList<>();
         this.role = role;
     }
 
@@ -57,6 +65,7 @@ public class User implements UserDetails
         this.password = password;
         this.user_recipes = new ArrayList<>();
         this.favourites = new ArrayList<>();
+        this.liked_recipes = new ArrayList<>();
         this.role = Role.USER;
     }
 
@@ -152,6 +161,21 @@ public class User implements UserDetails
         this.favourites = favourites;
     }
 
+    public void setUser_recipes(List<Recipe> user_recipes) {
+        this.user_recipes = user_recipes;
+    }
+
+    public void setFavourites(List<Recipe> favourites) {
+        this.favourites = favourites;
+    }
+
+    public List<Recipe> getLiked_recipes() {
+        return liked_recipes;
+    }
+
+    public void setLiked_recipes(List<Recipe> liked_recipes) {
+        this.liked_recipes = liked_recipes;
+    }
 
     public ArrayList<Long> getUserRecipesId()
     {

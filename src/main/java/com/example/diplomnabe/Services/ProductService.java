@@ -38,10 +38,6 @@ public class ProductService
     }
 
     public void createProduct(String name) {
-        if(!productRepository.findByName(name).isEmpty())
-        {
-
-        }
         Product product = new Product(name);
         productRepository.save(product);
     }

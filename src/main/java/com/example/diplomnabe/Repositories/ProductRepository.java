@@ -12,6 +12,6 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product,Long>
 {
-    @Query(nativeQuery = true,value="SELECT name from Product p WHERE name = :product_name")
-    List<String> findByName(String product_name);
+    @Query(nativeQuery = true,value="SELECT p.id from Product p WHERE name = :product_name")
+    long findByName(String product_name);
 }

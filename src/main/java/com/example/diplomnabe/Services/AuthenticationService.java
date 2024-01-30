@@ -12,6 +12,9 @@ import com.example.diplomnabe.Classes.User;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Objects;
+
 
 @Service
 public class AuthenticationService
@@ -28,14 +31,22 @@ public class AuthenticationService
         this.authenticationManager = authenticationManager;
     }
 
-    public AuthenticationResponse register(RegisterRequest request)
-    {
-        /*var user = User.builder()
-                .name(request.getName())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.USER)
-                .build();*/
+    public AuthenticationResponse register(RegisterRequest request) throws Exception {
+        List<User> users = userRepository.findAll();
+        try{
+            for(int i = 0; i < users.size(); i++)
+            {
+                if(Objects.equals(users.get(i).getName(), request.getName()) || Objects.equals(users.get(i).getEmail(), request.getEmail()))
+                {
+                    throw new Exception("User with same name or email already exist");
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            throw new Exception("User with same name or email already exist");
+        }
+
         var user = new User(request.getName(), request.getEmail(), passwordEncoder.encode(request.getPassword()));
         userRepository.save(user);
         var jwtToken = jwtService.generateToken(user);

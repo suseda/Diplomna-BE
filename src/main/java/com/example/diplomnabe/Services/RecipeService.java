@@ -14,6 +14,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -34,18 +35,24 @@ public class RecipeService
         return recipes.map(recipe -> recipe.convertRecipeToRecipeDTO());
     }
 
-    public Page<RecipeDTO> getRecipesDTOBySearch(Pageable pageable, String searchedWord)
+    public Page<RecipeDTO> getRecipesDTOBySearch(Pageable pageable, String searchedWord, String type)
     {
-        Page<Recipe> recipes = recipeRepository.findByNameWithPagination(pageable,searchedWord);
+        Page<Recipe> recipes;
+        if(Objects.equals(type, "None") && !Objects.equals(searchedWord, ""))
+            recipes = recipeRepository.findByNameWithPagination(pageable,searchedWord);
+        else
+            if(!Objects.equals(type, "None") && Objects.equals(searchedWord, ""))
+                recipes = recipeRepository.findByTypeWithPagination(pageable,type);
+            else
+                recipes = recipeRepository.findByTypeAndNameWithPagination(pageable,searchedWord,type);
         return recipes.map(recipe -> recipe.convertRecipeToRecipeDTO());
     }
 
     public void createRecipe(RecipeDTO recipeDTO,Long userId) {
         Optional<User> userOptional = userRepository.findById(userId);
-
         User user = userOptional.get();
 
-        Recipe recipe = new Recipe(recipeDTO.getId(),recipeDTO.getName(),recipeDTO.getDescription(),recipeDTO.getTime_for_cooking(),recipeDTO.getType(),user);
+        Recipe recipe = new Recipe(recipeDTO.getName(),recipeDTO.getDescription(),recipeDTO.getTime_for_cooking(),recipeDTO.getType(),user);
 
         recipeRepository.save(recipe);
     }
@@ -68,13 +75,20 @@ public class RecipeService
 
     public long getPagesCntOfRecipes()
     {
-        int cnt = (int) recipeRepository.countOfAllRecipes();
+        int cnt = recipeRepository.countOfAllRecipes();
         return cnt / 3;
     }
 
-    public long getPagesCntOfSearchedWord(String searchedWord)
+    public long getPagesCntOfSearchedWord(String searchedWord, String type)
     {
-        int cnt = (int) recipeRepository.countOfMatchingRecipes(searchedWord);
+        int cnt = 0;
+        if(Objects.equals(searchedWord, "") && !Objects.equals(type, "None"))
+            cnt = recipeRepository.countOfTypeMatchingRecipes(type);
+        else
+            if(!Objects.equals(searchedWord, "") && Objects.equals(type, "None"))
+                cnt = recipeRepository.countOfSearchedWordMatchingRecipes(searchedWord);
+            else
+                cnt = recipeRepository.countOfMatchingRecipes(searchedWord,type);
         return cnt / 3;
     }
 
@@ -107,14 +121,17 @@ public class RecipeService
         Recipe recipe = recipeRepository.findById(recipeId)
                 .orElseThrow(() -> new EntityNotFoundException("Recipe not found with id: " + recipeId));
 
-        user.getFavourites().remove(recipe);
-        userRepository.save(user);
-        recipe.getUsers_favourites().remove(user);
-        recipeRepository.save(recipe);
+        recipeRepository.deleteFavConnection(userId,recipeId);
     }
 
     public List<ProductGramsDTO> getRecipeProducts(Long recipeId)
     {
         return recipeRepository.findProductGramsDTOByRecipeId(recipeId);
+    }
+
+    public boolean getFavConnectionExist(Long recipeId, Long userId)
+    {
+        int cnt = recipeRepository.cntFavConnection(userId,recipeId);
+        return cnt > 0;
     }
 }
