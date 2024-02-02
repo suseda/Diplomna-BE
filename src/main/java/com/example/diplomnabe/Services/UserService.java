@@ -82,4 +82,18 @@ public class UserService
         user.setName(newName);
         userRepository.save(user);
     }
+
+    public List<RecipeDTO> getLikedRecipesOfUser(Long userId)
+    {
+        User user = userRepository.getReferenceById(userId);
+        List<Recipe> liked = user.getLiked_recipes();
+        List<RecipeDTO> recipesDTO = new ArrayList<>();
+
+        if (liked.isEmpty())
+            return recipesDTO;
+
+        for(Recipe recipe: liked)
+            recipesDTO.add(recipe.convertRecipeToRecipeDTO());
+        return recipesDTO;
+    }
 }

@@ -49,8 +49,15 @@ public interface RecipeRepository extends JpaRepository<Recipe,Long>
     @Query(value = "DELETE FROM user_favourites_recipe_table WHERE user_id = :userId AND favourites_recipe_id = :recipeId", nativeQuery = true)
     void deleteFavConnection(@Param("userId") Long userId, @Param("recipeId") Long recipeId);
 
+    @Modifying
+    @Query(value = "DELETE FROM user_likes_recipe_table WHERE user_id = :userId AND liked_recipes_id = :recipeId", nativeQuery = true)
+    void deleteLikeConnection(@Param("userId") Long userId, @Param("recipeId") Long recipeId);
+
     @Query(value = "SELECT COUNT(*) FROM user_favourites_recipe_table WHERE user_id = :userId AND favourites_recipe_id = :recipeId", nativeQuery = true)
     int cntFavConnection(@Param("userId") Long userId, @Param("recipeId") Long recipeId);
+
+    @Query(value = "SELECT COUNT(*) FROM user_likes_recipe_table WHERE user_id = :userId AND liked_recipes_id = :recipeId", nativeQuery = true)
+    int cntLikeConnection(@Param("userId") Long userId, @Param("recipeId") Long recipeId);
 
 
 }

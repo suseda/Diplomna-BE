@@ -2,22 +2,25 @@ package com.example.diplomnabe.DTO;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RecipeDTO
 {
     private Long id;
     private String name;
-    private Integer likes;
+    private int likes;
     private String description;
     private Integer time_for_cooking;
     private String type;
 
     private Long owner_id;
+
+    private List<ProductGramsDTO> products;
     private ArrayList<Long> user_favourites_recipe_ids;
 
     public RecipeDTO() {}
 
-    public RecipeDTO(Long id,String name, Integer likes, String description, Integer time_for_cooking, String type, Long owner_id,ArrayList<Long> user_favourites_recipe_ids) {
+    public RecipeDTO(Long id,String name, int likes, String description, Integer time_for_cooking, String type, Long owner_id,ArrayList<Long> user_favourites_recipe_ids) {
         this.id = id;
         this.name = name;
         this.likes = likes;
@@ -44,11 +47,11 @@ public class RecipeDTO
         this.name = name;
     }
 
-    public Integer getLikes() {
+    public int getLikes() {
         return likes;
     }
 
-    public void setLikes(Integer likes) {
+    public void setLikes(int likes) {
         this.likes = likes;
     }
 
@@ -82,5 +85,21 @@ public class RecipeDTO
 
     public void setOwner(Long owner_id) {
         this.owner_id = owner_id;
+    }
+
+    public List<ProductGramsDTO> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<ProductGramsDTO> products) {
+        this.products = products;
+    }
+
+    public ArrayList<Long> getUser_favourites_recipe_ids() {
+        return user_favourites_recipe_ids;
+    }
+
+    public void setUser_favourites_recipe_ids(ArrayList<Long> user_favourites_recipe_ids) {
+        this.user_favourites_recipe_ids = user_favourites_recipe_ids;
     }
 }

@@ -71,13 +71,14 @@ public class User implements UserDetails
 
     public User() {}
 
-    public User(Long id, String name, String email, String password, List<Recipe> user_recipes, List<Recipe> favourites, Role role) {
+    public User(Long id, String name, String email, String password, List<Recipe> user_recipes, List<Recipe> favourites, List<Recipe> liked_recipes,Role role) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
         this.user_recipes = user_recipes;
         this.favourites = favourites;
+        this.liked_recipes = liked_recipes;
         this.role = role;
     }
 

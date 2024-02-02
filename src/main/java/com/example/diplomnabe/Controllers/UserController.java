@@ -41,6 +41,12 @@ public class UserController
         return userService.getFavouritesRecipesOfUser(userId);
     }
 
+    @GetMapping("/liked/{userId}")
+    public List<RecipeDTO> LikedRecipesOfUser(@PathVariable Long userId)
+    {
+        return userService.getLikedRecipesOfUser(userId);
+    }
+
     @PostMapping
     public void registerNewUser(@RequestBody User user)
     {

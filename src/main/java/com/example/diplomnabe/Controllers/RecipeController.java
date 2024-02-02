@@ -5,6 +5,7 @@ import com.example.diplomnabe.DTO.ProductGramsDTO;
 import com.example.diplomnabe.DTO.RecipeDTO;
 import com.example.diplomnabe.DTO.UserDTO;
 import com.example.diplomnabe.Repositories.UserRepository;
+import com.example.diplomnabe.Services.RecipeProductService;
 import com.example.diplomnabe.Services.RecipeService;
 import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +77,11 @@ public class RecipeController
         return recipeService.getFavConnectionExist(recipeId,userId);
     }
 
+    @GetMapping("/likeConnectionExist")
+    public boolean getLikeConnectionExist(@RequestParam Long recipeId,@RequestParam Long userId)
+    {
+        return recipeService.getLikeConnectionExist(recipeId,userId);
+    }
 
     @PostMapping("/{userId}")
     public void createRecipe(@PathVariable Long userId, @RequestBody RecipeDTO recipeDTO) {
@@ -86,6 +92,12 @@ public class RecipeController
     public void connectUserWithFavouriteRecipe(@PathVariable Long userId, @PathVariable Long recipeId)
     {
         recipeService.favouritesUserToRecipe(recipeId,userId);
+    }
+
+    @PostMapping("/{userId}/like/{recipeId}")
+    public void connectUserWithLikedRecipe(@PathVariable Long userId, @PathVariable Long recipeId)
+    {
+        recipeService.UserLikeToRecipe(recipeId,userId);
     }
 
     @PatchMapping("/likes/{recipeId}")
@@ -99,6 +111,12 @@ public class RecipeController
     public void deleteFavouritesConnection(@PathVariable Long userId,@PathVariable Long recipeId)
     {
         recipeService.deleteFavConnection(userId,recipeId);
+    }
+
+    @DeleteMapping("/delete/{userId}/like/{recipeId}")
+    public void deleteLikeConnection(@PathVariable Long userId,@PathVariable Long recipeId)
+    {
+        recipeService.deleteLikeConnection(userId,recipeId);
     }
     @DeleteMapping("/{recipeId}")
     public void deleteRecipe(@PathVariable Long recipeId) throws Exception {

@@ -56,6 +56,7 @@ public class SecurityConfig
         options.add("GET");
         options.add("POST");
         options.add("PUT");
+        options.add("PATCH");
         options.add("DELETE");
         options.add("OPTIONS");
         CorsConfiguration config = new CorsConfiguration();

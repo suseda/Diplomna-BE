@@ -19,7 +19,7 @@ public class Recipe
     @GeneratedValue( strategy = GenerationType.SEQUENCE, generator = "recipe_sequence")
     private Long id;
     private String name;
-    private Integer likes;
+    private int likes;
     private String description;
     private Integer time_for_cooking;
     private String type;
@@ -83,11 +83,11 @@ public class Recipe
         this.name = name;
     }
 
-    public Integer getLikes() {
+    public int getLikes() {
         return likes;
     }
 
-    public void setLikes(Integer likes) {
+    public void setLikes(int likes) {
         this.likes = likes;
     }
 

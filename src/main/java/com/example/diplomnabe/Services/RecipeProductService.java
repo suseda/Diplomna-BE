@@ -59,7 +59,7 @@ public class RecipeProductService
         Recipe recipe = recipeOptional.get();
         for(int i = 0; i < products.size(); i++ )
         {
-            long id = productRepository.findByName(products.get(i).getProductName());
+            long id = productRepository.findIdByName(products.get(i).getProductName());
             Optional<Product> productOptional = productRepository.findById(id);
             Product product = productOptional.get();
             RecipeProduct rec_pro = new RecipeProduct(recipe,product,products.get(i).getGrams());

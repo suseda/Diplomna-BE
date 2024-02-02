@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -38,6 +39,11 @@ public class ProductService
     }
 
     public void createProduct(String name) {
+        List<Product> products = productRepository.findAll();
+        for (Product value : products) {
+            if (Objects.equals(value.getName(), name))
+                return;
+        }
         Product product = new Product(name);
         productRepository.save(product);
     }
