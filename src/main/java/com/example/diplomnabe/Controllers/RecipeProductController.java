@@ -1,6 +1,7 @@
 package com.example.diplomnabe.Controllers;
 
 import com.example.diplomnabe.Classes.RecipeProduct;
+import com.example.diplomnabe.DTO.ProductGramsDTO;
 import com.example.diplomnabe.DTO.RecipeProductDTO;
 import com.example.diplomnabe.Services.RecipeProductService;
 import com.example.diplomnabe.Services.RecipeService;
@@ -31,5 +32,10 @@ public class RecipeProductController
     public void createRecipeProduct(@PathVariable Long recipeId, @PathVariable Long productId, @PathVariable String grams)
     {
         recipeProductService.createRecipeProduct(recipeId,productId,grams);
+    }
+    @PostMapping("/{recipeId}")
+    public void createRecipeProductWithProductList(@PathVariable Long recipeId,@RequestBody List<ProductGramsDTO> products)
+    {
+        recipeProductService.createRecipeProductWithProductList(recipeId,products);
     }
 }

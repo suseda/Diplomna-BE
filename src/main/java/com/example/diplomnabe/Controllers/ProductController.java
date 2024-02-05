@@ -22,18 +22,16 @@ public class ProductController
         this.productService = productService;
     }
 
-    @GetMapping
+    @GetMapping()
     public List<ProductDTO> getProducts()
     {
         return productService.getProductsDTO();
     }
 
-    @PostMapping()
-    public void createProduct(@RequestBody ProductDTO productDTO) {
-        productService.createProduct(productDTO);
+    @PostMapping("/{name}")
+    public void createProduct(@PathVariable String name) {
+        productService.createProduct(name);
     }
-
-
 
     @DeleteMapping(path = "/{productId}")
     public void deleteProduct(@PathVariable("productId") Long ProductId) throws Exception {

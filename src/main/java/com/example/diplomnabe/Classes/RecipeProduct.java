@@ -4,7 +4,7 @@ import com.example.diplomnabe.DTO.RecipeProductDTO;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "RecipeProduct_table")
+@Table(name = "RECIPE_PRODUCT_TABLE")
 public class RecipeProduct
 {
     @Id
